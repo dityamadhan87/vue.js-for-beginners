@@ -1,18 +1,36 @@
 <template>
   <div class="SocialPostComments">
+    <template v-if="comments.length === 0">
+      <p>There are no comments for this post!</p>
+    </template>
+    <template v-else>
       <p>Comments:</p>
-      <div v-for="(comment, index) in comments" class="comment" :key="index">
-        <p>{{ comment }}</p>
-        <IconDeleteVue />
+      <div v-for="{owner, message} in comments" class="comment" :key="owner">
+        <p>{{ owner.firstName }}: <strong>{{ message }}</strong></p>
       </div>
+    </template>
   </div>
 </template>
 
 <script setup >
-import IconDeleteVue from '../icons/IconDelete.vue';
+import { reactive } from 'vue';
 const props = defineProps({
-  comments: Array
-})
+  postId: String
+});
+
+const comments = reactive([]);
+const fetchComments = async (postId) => {
+  const baseUrl = "https://dummyapi.io/data/v1";
+  const response = await fetch(`${baseUrl}/post/${postId}/comment?limit=5`,
+    {
+      "headers": {
+        "app-id": "657a3106698992f50c0a5885"
+      }
+    });
+  const result_1 = await response.json();
+  Object.assign(comments, result_1.data);
+};
+await fetchComments(props.postId);
 </script>
 
 <style lang="scss">
