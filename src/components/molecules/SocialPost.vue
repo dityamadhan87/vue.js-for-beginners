@@ -1,7 +1,6 @@
 <template>
   <div
     class="SocialPost"
-    :class="{ SocialPost__selected: selected}"
   >
     <div class="header">
       <img class="avatar" :src="avatarSrc" />
@@ -24,11 +23,12 @@
       {{ likes }}
       <TheButton
         @click="onShowCommentClick"
-        value="Show comment"
         width="auto"
         theme="dark"
         data-cy="showCommentButton"
-      />
+      >
+        Show comment
+      </TheButton>
     </div>
   </div>
 </template>
@@ -48,7 +48,7 @@ const onShowCommentClick = () => {
 
 const props = defineProps({
   username: String,
-  id: Number,
+  id: String,
   avatarSrc: String,
   post: String,
   likes: Number
@@ -67,18 +67,15 @@ const onDeleteClick = () => {
 <style lang="scss">
 .SocialPost{
   margin-bottom:16px;
-  &__selected{
-    border: white solid 1px;
-  }
   .header {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;;
+    margin-bottom: 8px;
   }
   .avatar {
     border-radius: 50%;
     width: 40px;
-    height: 40px;;
+    height: 40px;
     margin-right: 12px;
   }
   .name {
